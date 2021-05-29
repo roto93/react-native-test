@@ -90,7 +90,114 @@ const MOCK = [
     isSelected: false,
   }
 ]
-
+const MOCK2 = [{
+  "ID": 922328, "tripName": "北海道", "tripStartDate": new Date(2021, 4, 23), "tripEndDate": new Date(2021, 4, 25), "budget": "32000", "tripImage": 27, "isT2J": true, rate: 0.257,
+  shoppingItems: [{
+    id: '0',
+    tag: 'food',
+    time: '2021-01-27',
+    dayNum: '1',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '+0.1',
+    caption: '測試用的文字',
+    JPY_num: '5150',
+    NTD_num: '1421.4',
+    itemImage: [],
+  },
+  {
+    id: '1',
+    tag: 'shipping',
+    time: '2021-01-28',
+    dayNum: '2',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '+0.1',
+    caption: '',
+    JPY_num: '1312.5',
+    NTD_num: '362.25',
+    itemImage: [],
+  },
+  {
+    id: '2',
+    tag: 'transportation',
+    time: '2021-01-27',
+    dayNum: '1',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '+0.08',
+    caption: '又是一段測試用的文字',
+    JPY_num: '3375',
+    NTD_num: '931.5',
+    itemImage: [],
+  },
+  {
+    id: '3',
+    tag: 'wearing',
+    time: '2021-01-27',
+    dayNum: '1',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '',
+    caption: '再來一段測試用的文字',
+    JPY_num: '1500',
+    NTD_num: '414',
+    itemImage: [],
+  },
+  {
+    id: '4',
+    tag: 'other',
+    time: '2021-01-28',
+    dayNum: '2',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '',
+    caption: '',
+    JPY_num: '4750',
+    NTD_num: '1311',
+    itemImage: [],
+  },
+  {
+    id: '5',
+    tag: 'other',
+    time: '2021-01-29',
+    dayNum: '3',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '',
+    caption: '最後一段測試用的文字，我需要他非常非常非常非常非常非常非常非常非常長，長到不行，再長一點好了',
+    JPY_num: '1250',
+    NTD_num: '345',
+    itemImage: [],
+  },
+  {
+    id: '6',
+    tag: 'other',
+    time: '2021-01-29',
+    dayNum: '3',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '',
+    caption: '最後一段測試用的文字，我需要他非常非常非常非常非常非常非常非常非常長，長到不行，再長一點好了',
+    JPY_num: '1250',
+    NTD_num: '345',
+    itemImage: [],
+  },
+  {
+    id: '7',
+    tag: 'other',
+    time: '2021-01-29',
+    dayNum: '3',
+    totalDayNum: '3',
+    discount: '0.1',
+    tax: '',
+    caption: '最後一段測試用的文字，我需要他非常非常非常非常非常非常非常非常非常長，長到不行，再長一點好了',
+    JPY_num: '1250',
+    NTD_num: '345',
+    isAddImage: true,
+    isSelected: false,
+  },]
+}]
 
 export default function App() {
   const [toAccordionPage, setToAccordionPage] = useState(false);
@@ -103,6 +210,14 @@ export default function App() {
       <View style={{ width: '100%', height: 56, borderBottomWidth: 1, }}>
         <Text>{item.caption}</Text>
         <Text>{item.JPY_num}</Text>
+      </View>
+    )
+  }
+  const Item = ({ item }) => {
+
+    return (
+      <View>
+        <Text>{item.tag}{isCollapsed ? 'open' : 'close'}</Text>
       </View>
     )
   }
@@ -127,6 +242,15 @@ export default function App() {
             />
           </View>
         </Collapsible>
+
+        <View>
+          <FlatList
+            data={MOCK2[0].shoppingItems}
+            keyExtractor={(item, i) => i.toString()}
+
+            renderItem={({ item, i }) => <Item item={item} />}
+          />
+        </View>
       </View>
       }
       {toAccordionPage &&
