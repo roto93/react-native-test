@@ -1,21 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, View, Button } from 'react-native'
+import DatePicker from 'react-native-neat-date-picker'
 
-export default function App() {
+const App = () => {
+
+  const [showDatePicker, setShowDatePicker] = useState(false)
+
+  const openDatePicker = () => {
+    setShowDatePicker(true)
+  }
+
+  const onCancel = () => {
+    // You should close the modal in here
+    setShowDatePicker(false)
+  }
+
+  const onConfirm = (date) => {
+    // You should close the modal in here
+    setShowDatePicker(false)
+
+    // The parameter 'date' is a Date object so that you can use any Date prototype method.
+    console.log(date.getDate())
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Button title={'open'} onPress={openDatePicker} />
+      <DatePicker
+        isVisible={showDatePicker}
+        mode={'single'}
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+      />
     </View>
-  );
+  )
 }
+
+export default App
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-});
+    alignItems: 'center'
+  }
+})
