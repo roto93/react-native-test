@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import Svg from 'react-native-svg'
 import { VictoryPie } from 'victory-native'
 
 const getQuadrant = (x, y) => {
@@ -24,6 +25,7 @@ const CustomComponent = (props) => {
     let fraction = (props.datum.endAngle - props.datum.startAngle) / 360
     let percentage = Math.round(fraction * 1000) / 10
 
+    if (!props.active) return null
     return (
         <View style={{ position: 'absolute', left: x, top: y, flexDirection: reverse ? 'row-reverse' : 'row', alignItems: 'center', }}>
             <Text >{percentage}%</Text>
@@ -40,22 +42,66 @@ const data = [
     { tag: 'other', amount: 900 },
 ]
 
+const handleDataMutation = dataProps => {
+    const { style, radius, active } = dataProps
+    return !active
+        ? { active: true, radius: 95, style: { ...style, opacity: 1 } }
+        : { active: false, radius: 90 }
+}
+
+const handleLabelMutation = (props) => {
+    console.log(Object.keys(props))
+    console.log(props)
+    return props.active ? { active: false } : { active: true }
+}
 
 const PieChartPage = () => {
     return (
         <View style={styles.container}>
             <View style={styles.pieChartContainer}>
-                <VictoryPie
-                    x={'tag'}
-                    y={'amount'}
-                    data={data}
-                    width={320}
-                    height={320}
-                    padding={70}
-                    colorScale={['#FFB74A', '#FF8A70', '#C3F1EC', '#AC90E8', '#D9D9D9']}
-                    labelRadius={({ radius }) => radius + 5}
-                    labelComponent={<CustomComponent />}
-                />
+                <Svg>
+                    <VictoryPie
+                        x={'tag'}
+                        y={'amount'}
+                        data={data}
+                        width={320}
+                        height={320}
+                        padding={70}
+                        colorScale={['#FFB74A', '#FF8A70', '#C3F1EC', '#AC90E8', '#D9D9D9']}
+                        labelRadius={({ radius }) => radius + 5}
+                        labelComponent={<CustomComponent />}
+                        style={{ data: { opacity: 0.5 } }}
+                        events={[
+                            {
+                                target: 'data',
+                                eventHandlers: {
+                                    onPressIn: (e) => {
+                                        return [
+                                            {
+                                                eventKey: "all",
+                                                mutation: ({ style }) => { return { style: { ...style, opacity: 0.5 } } }
+                                            },
+                                            {
+                                                target: 'data',
+                                                mutation: handleDataMutation
+                                            },
+                                            {
+                                                target: 'labels',
+                                                eventKey: "all",
+                                                mutation: ({ style }) => { return { style: { ...style, opacity: 0.5 } } }
+                                            },
+                                            {
+                                                target: 'labels',
+                                                mutation: handleLabelMutation
+                                            }
+                                        ]
+                                    },
+                                }
+                            }
+                        ]}
+                        animate={{ duration: 300 }}
+                    />
+                </Svg>
 
 
             </View>
